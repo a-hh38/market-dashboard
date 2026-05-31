@@ -1,0 +1,502 @@
+<html>
+
+<head>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: black;
+    margin: 25px;
+}
+
+.title{
+    font-size: 42px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.subtitle{
+    color: gray;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.commentary{
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+    text-align: justify;
+    border-left: 4px solid #2f3542;
+    padding-left: 15px;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.section{
+    margin-bottom: 30px;
+}
+
+.section-title{
+    background-color: #012dbb;
+    color: white;
+    padding: 7px 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th{
+    background-color: #3d3d3d;
+    color: white;
+    padding: 7px;
+    font-size: 12px;
+    text-align: center;
+}
+
+td{
+    padding: 7px;
+    font-size: 12px;
+    border-bottom: 1px solid #dfe4ea;
+    text-align: center;
+}
+
+tr:nth-child(even){
+    background-color: #f1f2f6;
+}
+
+.footer{
+    margin-top: 40px;
+    font-size: 11px;
+    color: gray;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="subtitle">
+Daily Institutional Market Wrap
+</div>
+
+<div class="title">
+MORNING ALPHA
+</div>
+
+<div class="commentary">
+
+{{ commentary }}
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+Recent Economic Data
+</div>
+
+<table>
+
+<tr>
+    <th>Economic Data</th>
+    <th>Actual</th>
+    <th>Consensus</th>
+</tr>
+
+{% for row in economic_data %}
+
+<tr>
+
+<td>{{ row.event }}</td>
+
+<td>{{ row.actual }}</td>
+
+<td>{{ row.consensus }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+
+<div class="grid">
+
+<div class="section">
+
+<div class="section-title">
+Indian Markets
+</div>
+
+<table>
+
+<tr>
+    <th>Market</th>
+    <th>Last Price</th>
+    <th>%chg 1d</th>
+    <th>%chg 3m</th>
+    <th>%chg 6m</th>
+    <th>%chg 1y</th>
+</tr>
+
+{% for row in indian_markets %}
+
+<tr>
+
+<td>{{ row.market }}</td>
+
+<td>{{ row.last_price }}</td>
+
+<td>
+{% if row.change_1d < 0 %}
+({{ row.change_1d | abs }})
+{% else %}
+{{ row.change_1d }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_3m < 0 %}
+({{ row.change_3m | abs }})
+{% else %}
+{{ row.change_3m }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_6m < 0 %}
+({{ row.change_6m | abs }})
+{% else %}
+{{ row.change_6m }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_1y < 0 %}
+({{ row.change_1y | abs }})
+{% else %}
+{{ row.change_1y }}
+{% endif %}%
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+Developed / Emerging Markets
+</div>
+
+<table>
+
+<tr>
+    <th>Market</th>
+    <th>Last Price</th>
+    <th>%chg 1d</th>
+    <th>%chg 3m</th>
+    <th>%chg 6m</th>
+    <th>%chg 1y</th>
+</tr>
+
+{% for row in global_markets %}
+
+<tr>
+
+<td>{{ row.market }}</td>
+
+<td>{{ row.last_price }}</td>
+
+<td>
+{% if row.change_1d < 0 %}
+({{ row.change_1d | abs }})
+{% else %}
+{{ row.change_1d }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_3m < 0 %}
+({{ row.change_3m | abs }})
+{% else %}
+{{ row.change_3m }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_6m < 0 %}
+({{ row.change_6m | abs }})
+{% else %}
+{{ row.change_6m }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_1y < 0 %}
+({{ row.change_1y | abs }})
+{% else %}
+{{ row.change_1y }}
+{% endif %}%
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="section">
+
+<div class="section-title">
+Commodity
+</div>
+
+<table>
+
+<tr>
+    <th>Commodity</th>
+    <th>Last Price</th>
+    <th>%chg 1d</th>
+    <th>%chg 3m</th>
+    <th>%chg 6m</th>
+    <th>%chg 1y</th>
+</tr>
+
+{% for row in commodities %}
+
+<tr>
+
+<td>{{ row.market }}</td>
+
+<td>{{ row.last_price }}</td>
+
+<td>
+{% if row.change_1d < 0 %}
+({{ row.change_1d | abs }})
+{% else %}
+{{ row.change_1d }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_3m < 0 %}
+({{ row.change_3m | abs }})
+{% else %}
+{{ row.change_3m }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_6m < 0 %}
+({{ row.change_6m | abs }})
+{% else %}
+{{ row.change_6m }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_1y < 0 %}
+({{ row.change_1y | abs }})
+{% else %}
+{{ row.change_1y }}
+{% endif %}%
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+FX & G-Sec
+</div>
+
+<table>
+
+<tr>
+    <th>Instrument</th>
+    <th>Last Price</th>
+    <th>%chg 1d</th>
+    <th>%chg 3m</th>
+    <th>%chg 6m</th>
+    <th>%chg 1y</th>
+</tr>
+
+{% for row in fxgsec %}
+
+<tr>
+
+<td>{{ row.market }}</td>
+
+<td>{{ row.last_price }}</td>
+
+<td>
+{% if row.change_1d < 0 %}
+({{ row.change_1d | abs }})
+{% else %}
+{{ row.change_1d }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_3m < 0 %}
+({{ row.change_3m | abs }})
+{% else %}
+{{ row.change_3m }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_6m < 0 %}
+({{ row.change_6m | abs }})
+{% else %}
+{{ row.change_6m }}
+{% endif %}%
+</td>
+
+<td>
+{% if row.change_1y < 0 %}
+({{ row.change_1y | abs }})
+{% else %}
+{{ row.change_1y }}
+{% endif %}%
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+Top Gainers - NSE500
+</div>
+
+<table>
+
+<tr>
+    <th>Company Name</th>
+    <th>Sector</th>
+    <th>Closing Price</th>
+    <th>Rate Change (%)</th>
+</tr>
+
+{% for row in gainers %}
+
+<tr>
+
+<td>{{ row.company_name }}</td>
+
+<td>{{ row.sector }}</td>
+
+<td>{{ row.closing_price }}</td>
+
+<td>
+{% if row.rate_change < 0 %}
+({{ row.rate_change | abs }})
+{% else %}
+{{ row.rate_change }}
+{% endif %}%
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+Top Losers - NSE500
+</div>
+
+<table>
+
+<tr>
+    <th>Company Name</th>
+    <th>Sector</th>
+    <th>Closing Price</th>
+    <th>Rate Change (%)</th>
+</tr>
+
+{% for row in losers %}
+
+<tr>
+
+<td>{{ row.company_name }}</td>
+
+<td>{{ row.sector }}</td>
+
+<td>{{ row.closing_price }}</td>
+
+<td>
+{% if row.rate_change < 0 %}
+({{ row.rate_change | abs }})
+{% else %}
+{{ row.rate_change }}
+{% endif %}%
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+
+<div class="footer">
+
+Automated Institutional Market Intelligence Dashboard
+
+</div>
+
+</body>
+
+</html>
