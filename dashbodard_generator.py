@@ -1,10 +1,14 @@
 from jinja2 import Environment, FileSystemLoader
 import pandas as pd
-
+from corporate_news_fetcher import fetch_corporate_news
+from bulk_deals_fetcher import fetch_bulk_deals
+from economic_snippets import generate_economic_snippets
+from market_commentary import generate_commentary
 from database import engine
 
 
 def generate_dashboard():
+    bulk_deals = fetch_bulk_deals()
 
     print("Loading dashboard datasets...")
 
@@ -38,36 +42,111 @@ def generate_dashboard():
         engine
     )
 
-    # Economic Data
+    try:
+
+        economic_calendar = pd.read_csv(
+            "economic_calendar_dashboard.csv"
+        )
+
+    except Exception:
+
+        economic_calendar = pd.DataFrame()
+
     try:
 
         economic_data = pd.read_csv(
             "economic_data.csv"
         )
 
-    except:
+    except Exception:
 
         economic_data = pd.DataFrame()
 
-    # Participants Activity
     try:
 
         participants = pd.read_csv(
             "participants_activity.csv"
         )
 
-    except:
+    except Exception:
 
         participants = pd.DataFrame()
 
-    # Static Commentary
-    commentary = """
+    released_events = pd.DataFrame()
+    upcoming_events = pd.DataFrame()
 
-    Dow Jones traded weak overnight amid persistent concerns surrounding global growth and elevated interest rates. Investors continued to monitor commentary from major central bank officials while commodity prices remained volatile across global markets.
+    if not economic_calendar.empty:
 
-    Indian equities witnessed selective buying interest led by financials and industrials, although broader market sustainability continues to remain dependent on global risk appetite and evolving macroeconomic conditions.
+        # Released events
 
-    """
+        released_events = economic_calendar.copy()
+
+        economic_snippets = generate_economic_snippets(
+    released_events
+)
+
+        released_events = released_events[
+            released_events["actual"].notna()
+        ]
+
+        released_events = released_events[
+            released_events["actual"] != ""
+        ]
+
+        released_events = released_events.tail(5)
+
+        if not released_events.empty:
+
+            released_events["actual"] = (
+                released_events["actual"]
+                .fillna("")
+            )
+
+            released_events["forecast"] = (
+                released_events["forecast"]
+                .fillna("")
+            )
+
+        # Upcoming events
+
+        upcoming_events = economic_calendar.copy()
+
+        upcoming_events = upcoming_events[
+            upcoming_events["impact"] == "High"
+        ]
+
+        upcoming_events = upcoming_events.head(4)
+
+        upcoming_events["forecast"] = (
+            upcoming_events["forecast"]
+            .fillna("")
+        )
+
+        upcoming_events["date"] = pd.to_datetime(
+            upcoming_events["date"]
+        )
+
+        upcoming_events["date"] = (
+            upcoming_events["date"]
+            .dt.strftime("%d %b | %H:%M")
+        )
+
+        upcoming_events["display_event"] = (
+            upcoming_events.apply(
+                lambda x:
+                f"{x['title']} (Cons: {x['forecast']})"
+                if str(x["forecast"]).strip() != ""
+                else x["title"],
+                axis=1
+            )
+        )
+
+    commentary = generate_commentary(
+    indian_markets,
+    global_markets,
+    commodities
+)
+    corporate_news = fetch_corporate_news()
 
     print("Loading HTML template...")
 
@@ -84,6 +163,10 @@ def generate_dashboard():
     html = template.render(
 
         commentary=commentary,
+
+        corporate_news=corporate_news,
+        bulk_deals=bulk_deals,
+        economic_snippets=economic_snippets,
 
         indian_markets=indian_markets.to_dict(
             orient="records"
@@ -110,6 +193,14 @@ def generate_dashboard():
         ),
 
         economic_data=economic_data.to_dict(
+            orient="records"
+        ),
+
+        released_events=released_events.to_dict(
+            orient="records"
+        ),
+
+        upcoming_events=upcoming_events.to_dict(
             orient="records"
         ),
 

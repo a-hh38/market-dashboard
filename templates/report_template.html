@@ -101,41 +101,9 @@ MORNING ALPHA
 
 </div>
 
+<div class="grid">
 
 <div class="section">
-
-<div class="section-title">
-Recent Economic Data
-</div>
-
-<table>
-
-<tr>
-    <th>Economic Data</th>
-    <th>Actual</th>
-    <th>Consensus</th>
-</tr>
-
-{% for row in economic_data %}
-
-<tr>
-
-<td>{{ row.event }}</td>
-
-<td>{{ row.actual }}</td>
-
-<td>{{ row.consensus }}</td>
-
-</tr>
-
-{% endfor %}
-
-</table>
-
-</div>
-
-
-<div class="grid">
 
 <div class="section">
 
@@ -148,10 +116,10 @@ Indian Markets
 <tr>
     <th>Market</th>
     <th>Last Price</th>
-    <th>%chg 1d</th>
-    <th>%chg 3m</th>
-    <th>%chg 6m</th>
-    <th>%chg 1y</th>
+    <th>1D</th>
+    <th>3M</th>
+    <th>6M</th>
+    <th>1Y</th>
 </tr>
 
 {% for row in indian_markets %}
@@ -167,7 +135,7 @@ Indian Markets
 ({{ row.change_1d | abs }})
 {% else %}
 {{ row.change_1d }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -175,7 +143,7 @@ Indian Markets
 ({{ row.change_3m | abs }})
 {% else %}
 {{ row.change_3m }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -183,7 +151,7 @@ Indian Markets
 ({{ row.change_6m | abs }})
 {% else %}
 {{ row.change_6m }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -191,7 +159,7 @@ Indian Markets
 ({{ row.change_1y | abs }})
 {% else %}
 {{ row.change_1y }}
-{% endif %}%
+{% endif %}
 </td>
 
 </tr>
@@ -233,7 +201,7 @@ Developed / Emerging Markets
 ({{ row.change_1d | abs }})
 {% else %}
 {{ row.change_1d }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -241,7 +209,7 @@ Developed / Emerging Markets
 ({{ row.change_3m | abs }})
 {% else %}
 {{ row.change_3m }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -249,7 +217,7 @@ Developed / Emerging Markets
 ({{ row.change_6m | abs }})
 {% else %}
 {{ row.change_6m }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -257,7 +225,7 @@ Developed / Emerging Markets
 ({{ row.change_1y | abs }})
 {% else %}
 {{ row.change_1y }}
-{% endif %}%
+{% endif %}
 </td>
 
 </tr>
@@ -303,7 +271,7 @@ Commodity
 ({{ row.change_1d | abs }})
 {% else %}
 {{ row.change_1d }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -311,7 +279,7 @@ Commodity
 ({{ row.change_3m | abs }})
 {% else %}
 {{ row.change_3m }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -319,7 +287,7 @@ Commodity
 ({{ row.change_6m | abs }})
 {% else %}
 {{ row.change_6m }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -327,7 +295,7 @@ Commodity
 ({{ row.change_1y | abs }})
 {% else %}
 {{ row.change_1y }}
-{% endif %}%
+{% endif %}
 </td>
 
 </tr>
@@ -369,7 +337,7 @@ FX & G-Sec
 ({{ row.change_1d | abs }})
 {% else %}
 {{ row.change_1d }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -377,7 +345,7 @@ FX & G-Sec
 ({{ row.change_3m | abs }})
 {% else %}
 {{ row.change_3m }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -385,7 +353,7 @@ FX & G-Sec
 ({{ row.change_6m | abs }})
 {% else %}
 {{ row.change_6m }}
-{% endif %}%
+{% endif %}
 </td>
 
 <td>
@@ -393,7 +361,7 @@ FX & G-Sec
 ({{ row.change_1y | abs }})
 {% else %}
 {{ row.change_1y }}
-{% endif %}%
+{% endif %}
 </td>
 
 </tr>
@@ -437,7 +405,7 @@ Top Gainers - NSE500
 ({{ row.rate_change | abs }})
 {% else %}
 {{ row.rate_change }}
-{% endif %}%
+{% endif %}
 </td>
 
 </tr>
@@ -479,8 +447,211 @@ Top Losers - NSE500
 ({{ row.rate_change | abs }})
 {% else %}
 {{ row.rate_change }}
-{% endif %}%
+{% endif %}
 </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Bulk Deals
+</div>
+
+<table>
+
+<tr>
+    <th>Date</th>
+    <th>Symbol</th>
+    <th>Client</th>
+    <th>Action</th>
+    <th>Quantity</th>
+    <th>Price</th>
+</tr>
+
+{% if bulk_deals|length == 0 %}
+
+<tr>
+    <td colspan="6">
+        No bulk deals available.
+    </td>
+</tr>
+
+{% endif %}
+
+{% for row in bulk_deals %}
+
+<tr>
+
+<td>{{ row.date }}</td>
+
+<td>{{ row.symbol }}</td>
+
+<td>{{ row.client }}</td>
+
+<td>{{ row.action }}</td>
+
+<td>{{ "{:,}".format(row.quantity) }}</td>
+
+<td>₹{{ row.price }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<table>
+
+<div class="section">
+
+<div class="section-title">
+Corporate Snippets
+</div>
+
+{% if corporate_news|length == 0 %}
+
+<tr>
+    <td>
+        No major corporate developments.
+    </td>
+</tr>
+
+{% endif %}
+
+{% for row in corporate_news %}
+
+<tr>
+
+<td style="text-align:left;">
+{{ row.headline }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Economic Highlights
+</div>
+
+<table>
+
+{% if economic_snippets|length == 0 %}
+
+<tr>
+    <td>
+        No major economic developments.
+    </td>
+</tr>
+
+{% endif %}
+
+{% for item in economic_snippets %}
+
+<tr>
+    <td style="text-align:left;">
+        • {{ item }}
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+<div class="section">
+
+<div class="section-title">
+Recent Economic Releases
+</div>
+
+<table>
+
+<tr>
+    <th>Country</th>
+    <th>Event</th>
+    <th>Actual</th>
+    <th>Forecast</th>
+</tr>
+
+{% if released_events|length == 0 %}
+
+<tr>
+    <td colspan="4">
+        No major releases in the last 24 hours.
+    </td>
+</tr>
+
+{% endif %}
+
+{% for row in released_events %}
+
+<tr>
+
+<td>{{ row.country }}</td>
+
+<td>{{ row.title }}</td>
+
+<td>{{ row.actual }}</td>
+
+<td>{{ row.forecast }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Today's High Impact Events
+</div>
+
+<table>
+
+<tr>
+    <th>Time</th>
+    <th>Country</th>
+    <th>Event</th>
+</tr>
+
+{% if upcoming_events|length == 0 %}
+
+<tr>
+    <td colspan="3">
+        No major scheduled events.
+    </td>
+</tr>
+
+{% endif %}
+
+{% for row in upcoming_events %}
+
+<tr>
+
+<td>{{ row.date }}</td>
+
+<td>{{ row.country }}</td>
+
+<td>{{ row.display_event }}</td>
 
 </tr>
 
